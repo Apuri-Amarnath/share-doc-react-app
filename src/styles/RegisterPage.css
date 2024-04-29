@@ -1,0 +1,17 @@
+.register-page, .login-page {
+    height: 100vh; /* Make the container take the full height of the viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .yello-bg{
+    background-color: rgb(228, 163, 43);
+  }
+  
+  /* Additional styles for responsiveness */
+  @media (max-width: 768px) {
+    .col-md-6 {
+      max-width: 90%; /* Adjust the maximum width for smaller screens */
+    }
+  }
+  
