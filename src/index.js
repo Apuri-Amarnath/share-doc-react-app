@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { FirebaseProvider } from "./context/firebase";
 import { BrowserRouter } from "react-router-dom";
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
