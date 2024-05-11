@@ -1,13 +1,13 @@
 import { signOut } from "firebase/auth";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import firebaseAuth, { useFirebase } from "../context/firebase";
+import "../styles/navbar.css";
 
 const auth = firebaseAuth;
 const Navbar = () => {
   const firebase = useFirebase();
   const navigate = useNavigate();
-  const [menuActive, setMenuActive] = useState(false); // State to track menu active status
 
   useEffect(() => {
     if (!firebase.isLoggedIn) {
@@ -17,28 +17,24 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container">
+      <div className="container p-2">
         <Link className="navbar-brand" to="/">
           Document Management
         </Link>
         <button
-          className={`navbar-toggler ${menuActive ? "active" : ""}`} // Add "active" class if menu is active
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          onClick={() => setMenuActive(!menuActive)} // Toggle menu active status
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div
-          className={`collapse navbar-collapse ${menuActive ? "show" : ""}`}
-          id="navbarSupportedContent"
-        >
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            <li className="nav-item rounded ">
               <Link className="nav-link" to="/profile">
                 Profile
               </Link>
@@ -59,17 +55,15 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-          <form className="d-flex">
-            <button
-              type="button"
-              className={`btn ${
-                menuActive ? "btn-dark" : "btn-outline-success"
-              }`} // Change button color based on menu active status
-              onClick={() => signOut(auth)}
-            >
-              Logout
-            </button>
-          </form>
+        </div>
+        <div className="nav-item">
+          <button
+            type="button"
+            className="btn btn-dark text-light"
+            onClick={() => signOut(auth)}
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>

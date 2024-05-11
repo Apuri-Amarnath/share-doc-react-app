@@ -8,8 +8,8 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 //firebase context creation
 const FirebaseContext = createContext(null);
 
@@ -49,7 +49,7 @@ export const FirebaseProvider = (props) => {
   const loginUserWithEmailAndPassword = (email, password) => {
     return signInWithEmailAndPassword(firebaseAuth, email, password);
   };
-  console.log(user);
+  //console.log(user);
 
   const uploadFilesToServer = async (files) => {
     // Iterate over each file and upload them individually
@@ -60,8 +60,11 @@ export const FirebaseProvider = (props) => {
       // Assuming user details are properly populated
       return addDoc(collection(firestore, "files"), {
         fileURL: uploadLocation.ref.fullPath,
+        name: `${file.name}`,
         userID: user.uid,
         userEmail: user.email,
+        uploadedTime: formatDate(Date.now()),
+        modifiedTime: formatDate(Date.now()),
         displayName: user.displayName,
         photoURL: user.photoURL || "",
       });
@@ -70,11 +73,35 @@ export const FirebaseProvider = (props) => {
     // Wait for all uploads to complete and return the results
     return Promise.all(uploadPromises);
   };
-  
+
+  const listAllFiles = () => {
+    return getDocs(collection(firestore, "files"));
+  };
+
   const isLoggedIn = user ? true : false;
+
+  const getCurrentUser = () => {
+    return firebaseAuth.currentUser;
+  };
 
   const signInWithGoogle = () =>
     signInWithPopup(firebaseAuth, googleAuthprovider);
+
+  const getImageURL = (path) => {
+    return getDownloadURL(ref(storage, path));
+  };
+
+  // time formater
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
   return (
     <FirebaseContext.Provider
       value={{
@@ -83,6 +110,9 @@ export const FirebaseProvider = (props) => {
         signInWithGoogle,
         isLoggedIn,
         uploadFilesToServer,
+        listAllFiles,
+        getCurrentUser,
+        getImageURL,
       }}
     >
       {props.children}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import "../styles/RegisterPage.css"; // Import custom CSS file
+import "../styles/RegisterPage.css"; 
 import { useFirebase } from "../context/firebase";
 import { useNavigate } from "react-router-dom";
 
