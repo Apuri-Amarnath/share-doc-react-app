@@ -39,7 +39,7 @@ const RegisterPage = () => {
     <div className="register-page bg-primary">
       <div className="container">
         <div className="row justify-content-center align-items-center">
-          <div className="col-md-6 col-lg-4">
+          <div className="col-md-6">
             <div className="card bg-white rounded">
               <div className="card-body">
                 <h2 className="text-center mb-4">Register</h2>
